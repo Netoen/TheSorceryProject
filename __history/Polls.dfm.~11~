@@ -1,0 +1,95 @@
+object Form4: TForm4
+  Left = 0
+  Top = 0
+  Caption = 'Poll'
+  ClientHeight = 252
+  ClientWidth = 538
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -16
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  OldCreateOrder = False
+  Position = poMainFormCenter
+  OnClose = FormClose
+  PixelsPerInch = 96
+  TextHeight = 19
+  object Panel1: TPanel
+    Left = 0
+    Top = 0
+    Width = 538
+    Height = 252
+    Align = alClient
+    ParentBackground = False
+    TabOrder = 0
+    ExplicitWidth = 523
+    ExplicitHeight = 171
+    object TrackBar1: TTrackBar
+      Left = 0
+      Top = 24
+      Width = 473
+      Height = 25
+      Max = 25
+      TabOrder = 0
+    end
+    object ProgressBar1: TProgressBar
+      Left = 8
+      Top = 2
+      Width = 457
+      Height = 16
+      TabOrder = 1
+    end
+    object SpinEdit1: TSpinEdit
+      Left = 471
+      Top = 12
+      Width = 58
+      Height = 29
+      MaxValue = 0
+      MinValue = 0
+      TabOrder = 2
+      Value = 0
+    end
+  end
+  object PrototypeBindSource1: TPrototypeBindSource
+    AutoActivate = True
+    AutoPost = False
+    FieldDefs = <
+      item
+        Name = 'IntField1'
+        FieldType = ftInteger
+        Generator = 'Integers'
+        ReadOnly = False
+      end>
+    ScopeMappings = <>
+    Left = 256
+    Top = 128
+  end
+  object BindingsList1: TBindingsList
+    Methods = <>
+    OutputConverters = <>
+    Left = 28
+    Top = 141
+    object LinkPropertyToFieldIntField1: TLinkPropertyToField
+      Category = 'Quick Bindings'
+      DataSource = PrototypeBindSource1
+      FieldName = 'IntField1'
+      Component = TrackBar1
+      ComponentProperty = 'Position'
+    end
+    object LinkPropertyToFieldValue: TLinkPropertyToField
+      Category = 'Quick Bindings'
+      DataSource = PrototypeBindSource1
+      FieldName = 'IntField1'
+      Component = SpinEdit1
+      ComponentProperty = 'Value'
+    end
+    object LinkPropertyToFieldPosition: TLinkPropertyToField
+      Category = 'Quick Bindings'
+      DataSource = PrototypeBindSource1
+      FieldName = 'IntField1'
+      Component = ProgressBar1
+      ComponentProperty = 'Position'
+    end
+  end
+end

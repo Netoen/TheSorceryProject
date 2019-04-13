@@ -1,0 +1,31 @@
+unit Additional_hidden;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ActnList, Vcl.Samples.Spin,
+  Vcl.PlatformDefaultStyleActnCtrls, Vcl.ActnMan, Vcl.StdCtrls, Vcl.Menus,
+  Vcl.ImgList, System.Actions;
+
+type
+  TForm5 = class(TForm)
+    FileSaveDialog1: TFileSaveDialog;
+    FileOpenDialog1: TFileOpenDialog;
+    ActionManager1: TActionManager;
+    ImageList1: TImageList;
+    Action1: TAction;
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  Form5: TForm5;
+
+implementation
+
+{$R *.dfm}
+
+end.

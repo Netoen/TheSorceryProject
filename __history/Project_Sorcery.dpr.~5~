@@ -1,0 +1,16 @@
+program Project_Sorcery;
+
+uses
+  Vcl.Forms,
+  Sorcery in 'Sorcery.pas' {Form1},
+  Items_and_Artifacts in 'Items_and_Artifacts.pas' {Form2};
+
+{$R *.res}
+
+begin
+  Application.Initialize;
+  Application.MainFormOnTaskbar := True;
+  Application.CreateForm(TForm1, Form1);
+//  Application.CreateForm(TForm2, Form2);
+  Application.Run;
+end.

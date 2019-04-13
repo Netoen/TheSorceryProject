@@ -1,0 +1,83 @@
+unit Polls;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls,
+  Data.Bind.GenData, System.Rtti, System.Bindings.Outputs, Vcl.Bind.Editors,
+  Data.Bind.EngExt, Vcl.Bind.DBEngExt, Data.Bind.Components,
+  Data.Bind.ObjectScope, Vcl.Samples.Spin, Vcl.ComCtrls, Vcl.Buttons,
+  Vcl.Bind.Navigator;
+
+type
+  TForm4 = class(TForm)
+    Panel1: TPanel;
+    TrackBar1: TTrackBar;
+    ProgressBar1: TProgressBar;
+    SpinEdit1: TSpinEdit;
+    Button1: TButton;
+    Label1: TLabel;
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure TrackBar1Change(Sender: TObject);
+    procedure SetNewValue(NewValue: Word; Sender: TObject);
+    procedure SpinEdit1Change(Sender: TObject);
+    procedure Button1Click(Sender: TObject);
+    procedure Panel1Click(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  Form4: TForm4;
+
+implementation
+
+{$R *.dfm}
+
+procedure TForm4.Button1Click(Sender: TObject);
+begin
+  SpinEdit1.Value := StrToInt(TrackBar1.Name[Length(TrackBar1.Name)]);
+end;
+
+procedure TForm4.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  Form4.Hide;
+  Exit;
+end;
+
+procedure TForm4.Panel1Click(Sender: TObject);
+begin
+   TrackBar1.Position:=2;
+end;
+
+procedure TForm4.SetNewValue(NewValue: Word; Sender: TObject);
+const NumberOfCases = 4;
+var l :byte;
+begin
+  TTrackBar(Sender).Position := NewValue; {
+  TProgressBar(FindComponent('ProgressBar' + IntToStr(l))).Position := NewValue;
+  TTrackBar(FindComponent('TrackBar' + IntToStr(l))).Position := NewValue;
+  TSpinEdit(FindComponent('SpinEdit' + IntToStr(l))).Value := NewValue;
+  for l := 1 to NumberOfCases do
+   begin
+   TProgressBar(FindComponent('ProgressBar' + IntToStr(l))).Position := NewValue;
+   TTrackBar(FindComponent('TrackBar' + IntToStr(l))).Position := NewValue;
+   TSpinEdit(FindComponent('SpinEdit' + IntToStr(l))).Value := NewValue;
+   end;
+                                           }
+end;
+
+procedure TForm4.SpinEdit1Change(Sender: TObject);
+begin
+//  SetNewValue(SpinEdit1.Value, 1);
+end;
+
+procedure TForm4.TrackBar1Change(Sender: TObject);
+begin
+  SetNewValue(TrackBar1.Position, Trackbar1);
+end;
+
+end.

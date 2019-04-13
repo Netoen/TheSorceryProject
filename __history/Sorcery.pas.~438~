@@ -1,0 +1,648 @@
+unit Sorcery;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
+  Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.Samples.Spin,
+  Vcl.ComCtrls, Vcl.ActnList, Vcl.PlatformDefaultStyleActnCtrls, Vcl.ActnMan,
+  Vcl.Themes,
+  Bonuses, Dice_Roller, Polls, Additional_hidden, Extended_Poll, Battle,
+  Vcl.Menus, Vcl.ExtCtrls, ShellApi;
+
+const
+  num = 8;
+
+type
+  TForm1 = class(TForm)
+    Label_Stamina: TLabel;
+    SpinEdit_Stamina: TSpinEdit;
+    Label_Gold: TLabel;
+    SpinEdit_Gold: TSpinEdit;
+    Label_Skill: TLabel;
+    SpinEdit_Skill: TSpinEdit;
+    Label_Luck: TLabel;
+    SpinEdit_Luck: TSpinEdit;
+    Label_Provision: TLabel;
+    SpinEdit_Provision: TSpinEdit;
+    Memo_Clues: TMemo;
+    Label_Clues: TLabel;
+    Label_Bonuses: TLabel;
+    Memo_Items: TMemo;
+    StatusBar1: TStatusBar;
+    Label_Stamina_Max: TLabel;
+    Label_Skill_Max: TLabel;
+    Label_Luck_Max: TLabel;
+    SpinButton_Stamina: TSpinButton;
+    SpinButton_Skill: TSpinButton;
+    SpinButton_Luck: TSpinButton;
+    Panel1: TPanel;
+    Panel2: TPanel;
+    Panel3: TPanel;
+    Button_Bonuses: TButton;
+    Panel4: TPanel;
+    Label_Name: TLabel;
+    Label_Name_Edit: TLabel;
+    Edit_Name: TEdit;
+    Splitter1: TSplitter;
+    SpinEdit_Stat1: TSpinEdit;
+    SpinEdit_Stat2: TSpinEdit;
+    Label_Stat1_Max: TLabel;
+    Label_Stat2_Max: TLabel;
+    SpinButton_Stat1: TSpinButton;
+    SpinButton_Stat2: TSpinButton;
+    Label_Stat1: TLabel;
+    Label_Stat2: TLabel;
+    Edit_Stat1: TEdit;
+    Edit_Stat2: TEdit;
+    MainMenu_MainForm: TMainMenu;
+    File1: TMenuItem;
+    New1: TMenuItem;
+    Open1: TMenuItem;
+    Save1: TMenuItem;
+    SaveAs1: TMenuItem;
+    N1: TMenuItem;
+    Exit1: TMenuItem;
+    Help1: TMenuItem;
+    HowtoUseHelp1: TMenuItem;
+    About1: TMenuItem;
+    Style1: TMenuItem;
+    ools1: TMenuItem;
+    Polls1: TMenuItem;
+    ExtendedPoll1: TMenuItem;
+    DiceRolling1: TMenuItem;
+    Battle1: TMenuItem;
+    N2: TMenuItem;
+    N3: TMenuItem;
+    Amakrits1: TMenuItem;
+    AmethystKamri: TMenuItem;
+    AquaGraphite: TMenuItem;
+    AquaLightSlate: TMenuItem;
+    Auric: TMenuItem;
+    Carbon1: TMenuItem;
+    CharcoalDarkSlate: TMenuItem;
+    CobaltXEMedia: TMenuItem;
+    CyanDusk: TMenuItem;
+    CyanNight: TMenuItem;
+    Amakrits: TMenuItem;
+    Carbon: TMenuItem;
+    E1: TMenuItem;
+    EmeraldLightSlate: TMenuItem;
+    G1: TMenuItem;
+    I1: TMenuItem;
+    GoldenGraphite: TMenuItem;
+    IcebergClassico: TMenuItem;
+    L1: TMenuItem;
+    M1: TMenuItem;
+    R1: TMenuItem;
+    LavenderClassico: TMenuItem;
+    MetroBlack: TMenuItem;
+    MetroBlue: TMenuItem;
+    RubyGraphite: TMenuItem;
+    S1: TMenuItem;
+    T1: TMenuItem;
+    Windows: TMenuItem;
+    SapphireKamri: TMenuItem;
+    SlateClassico: TMenuItem;
+    SmokeyQuartzKamri: TMenuItem;
+    urquoiseGray: TMenuItem;
+    Timer_Autosave: TTimer;
+    Arvsstreams1: TMenuItem;
+    MetropolisUIDark1: TMenuItem;
+    MetropolisUIGreen1: TMenuItem;
+    Light1: TMenuItem;
+    Luna1: TMenuItem;
+    O1: TMenuItem;
+    Obsidian1: TMenuItem;
+    procedure Save_As(Sender: TObject);
+    procedure Load(Sender: TObject);
+    procedure save_state(var f: TextFile);
+    procedure load_state(var f: TextFile);
+    procedure Spinner_UpExecute(Sender: TObject);
+    procedure SpinButton_StaminaUpClick(Sender: TObject);
+    procedure SpinButton_StaminaDownClick(Sender: TObject);
+    procedure Spinner_DownExecute(Sender: TObject);
+    procedure SpinButton_SkillDownClick(Sender: TObject);
+    procedure SpinButton_SkillUpClick(Sender: TObject);
+    procedure SpinButton_LuckDownClick(Sender: TObject);
+    procedure SpinButton_LuckUpClick(Sender: TObject);
+    procedure About(Sender: TObject);
+    procedure Edit_NameKeyPress(Sender: TObject; var Key: Char);
+    procedure Label_Name_EditDblClick(Sender: TObject);
+    procedure Reset_Form(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure Dice(Sender: TObject);
+    procedure Polls(Sender: TObject);
+    procedure Label_Stat1DblClick(Sender: TObject);
+    procedure Edit_Stat1KeyPress(Sender: TObject; var Key: Char);
+    procedure Edit_Stat2KeyPress(Sender: TObject; var Key: Char);
+    procedure Label_Stat2DblClick(Sender: TObject);
+    procedure Exit(Sender: TObject);
+    procedure Extended_Poll(Sender: TObject);
+    procedure Battle(Sender: TObject);
+    procedure Button_BonusesClick(Sender: TObject);
+    procedure ChangeStyle(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure SpinButton_Stat1DownClick(Sender: TObject);
+    procedure SpinButton_Stat1UpClick(Sender: TObject);
+    procedure SpinButton_Stat2DownClick(Sender: TObject);
+    procedure SpinButton_Stat2UpClick(Sender: TObject);
+    procedure Timer_AutosaveTimer(Sender: TObject);
+    procedure Arvsstreams1Click(Sender: TObject);
+    procedure Save1Click(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure Label_Stat1Click(Sender: TObject);
+  private
+    fdefaultStyleName: String;
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  Form1: TForm1;
+  State: String;
+  Stamina_Max, Skill_Max, Luck_Max,
+  Stat1_Max, Stat2_Max : word;
+  ProgramPath: string;
+
+implementation
+
+{$R *.dfm}
+
+procedure TForm1.ChangeStyle(Sender: TObject);
+var i: string;
+begin
+  TStyleManager.TrySetStyle((Sender as TMenuItem).Caption);
+end;
+
+procedure TForm1.save_state(var f: TextFile);
+const buff = #0;
+var i: byte;
+begin
+  writeln(f, Label_Name_Edit.Caption);
+  writeln(f, SpinEdit_Stamina.Value);
+  writeln(f, SpinEdit_Skill.Value);
+  writeln(f, SpinEdit_Luck.Value);
+  writeln(f, SpinEdit_Gold.Value);
+  writeln(f, SpinEdit_Provision.Value);
+  writeln(f, Stamina_Max);
+  writeln(f, Skill_Max);
+  writeln(f, Luck_Max);
+  if Form2.Memo_Equipment.Lines.Count > 0 then for i := 0 to Form2.Memo_Equipment.Lines.Count-1 do writeln(f, Form2.Memo_Equipment.Lines[i]);
+  writeln(f, buff);
+  if Memo_Items.Lines.Count > 0 then for i := 0 to Memo_Items.Lines.Count-1 do writeln(f, Memo_Items.Lines[i]);
+  writeln(f, buff);
+  if Memo_Clues.Lines.Count > 0 then for i := 0 to Memo_Clues.Lines.Count-1 do writeln(f, Memo_Clues.Lines[i]);
+  writeln(f, buff);
+  writeln(f, SpinEdit_Stat1.Value);
+  writeln(f, SpinEdit_Stat2.Value);
+  writeln(f, Stat1_Max);
+  writeln(f, Stat2_Max);
+  writeln(f, Label_Stat1.Caption); // at the end for sake of back compability
+  writeln(f, Label_Stat2.Caption);
+end;
+
+procedure TForm1.load_state(var f: TextFile);
+var i: byte; a: string;
+begin
+  readln(f, a);
+  if a<>'' then
+   begin
+   Label_Name_Edit.Caption:= a;
+   Edit_Name.Text    := a;
+   end;
+  readln(f, a);
+  if a<>'' then
+   begin
+   SpinEdit_Stamina.Value  := StrToInt(a);
+   end;
+  readln(f, a);
+  if a<>'' then
+   begin
+   SpinEdit_Skill.Value    := StrToInt(a);
+   end;
+  readln(f, a);
+  if a<>'' then
+   begin
+   SpinEdit_Luck.Value     := StrToInt(a);
+   end;
+  readln(f, a);
+  if a<>'' then
+   begin
+   SpinEdit_Gold.Value     := StrToInt(a);
+   end;
+  readln(f, a);
+  if a<>'' then
+   begin
+   SpinEdit_Provision.Value:= StrToInt(a);
+   end;
+  readln(f, a);
+  if a<>'' then
+   begin
+   Stamina_Max := StrToInt(a);
+   Label_Stamina_Max.Caption := a;
+   end;
+  readln(f, a);
+  if a<>'' then
+   begin
+   Skill_Max := StrToInt(a);
+   Label_Skill_Max.Caption := a;
+   end;
+  readln(f, a);
+  if a<>'' then
+   begin
+   Luck_Max := StrToInt(a);
+   Label_Luck_Max.Caption := a;
+   end;
+  Form2.Memo_Equipment.Clear;
+  Memo_Items.Clear;
+  Memo_Clues.Clear;
+  repeat
+    readln(f, a);
+    Form2.Memo_Equipment.Lines.Add(a);
+  until (a=#0) or EOF(f);
+  repeat
+    readln(f, a);
+    Memo_Items.Lines.Add(a);
+  until (a=#0) or EOF(f);
+  repeat
+    readln(f, a);
+    Memo_Clues.Lines.Add(a);
+  until (a=#0) or EOF(f);
+  readln(f, a);
+  if a<>'' then
+   begin
+   SpinEdit_Stat1.Value := StrToInt(a);
+   end;
+  readln(f, a);
+  if a<>'' then
+   begin
+   SpinEdit_Stat2.Value := StrToInt(a);
+   end;
+  readln(f, a);
+  if a<>'' then
+   begin
+   Stat1_Max := StrToInt(a);
+   Label_Stat1_Max.Caption := a;
+   end;
+  readln(f, a);
+  if a<>'' then
+   begin
+   Stat2_Max := StrToInt(a);
+   Label_Stat2_Max.Caption := a;
+   end;
+  readln(f, a);
+  if a<>'' then
+   begin
+   Label_Stat1.Caption := a;
+   end;
+  readln(f, a);
+  if a<>'' then
+   begin
+   Label_Stat2.Caption := a;
+   end;
+end;
+
+procedure TForm1.SpinButton_Stat1DownClick(Sender: TObject);
+begin
+  if Stat1_Max > 0 then
+  begin
+   Spinner_DownExecute(Label_Stat1_Max);
+   dec(Stat1_Max);
+   SpinEdit_Stat1.MaxValue := Stat1_Max;
+   if SpinEdit_Stat1.Value > Stat1_Max then SpinEdit_Stat1.Value := Stat1_Max;
+  end;
+end;
+
+procedure TForm1.SpinButton_Stat1UpClick(Sender: TObject);
+begin
+  Spinner_UpExecute(Label_Stat1_Max);
+  inc(Stat1_Max);
+  SpinEdit_Stat1.MaxValue := Stat1_Max;
+end;
+
+procedure TForm1.SpinButton_Stat2DownClick(Sender: TObject);
+begin
+  if Stat2_Max > 0 then
+  begin
+   Spinner_DownExecute(Label_Stat2_Max);
+   dec(Stat2_Max);
+   SpinEdit_Stat2.MaxValue := Stat2_Max;
+   if SpinEdit_Stat2.Value > Stat2_Max then SpinEdit_Stat2.Value := Stat2_Max;
+  end;
+end;
+
+procedure TForm1.SpinButton_Stat2UpClick(Sender: TObject);
+begin
+  Spinner_UpExecute(Label_Stat2_Max);
+  inc(Stat2_Max);
+  SpinEdit_Stat2.MaxValue := Stat2_Max;
+end;
+
+procedure TForm1.SpinButton_LuckDownClick(Sender: TObject);
+begin
+  if Luck_Max > 0 then
+  begin
+   Spinner_DownExecute(Label_Luck_Max);
+   dec(Luck_Max);
+   SpinEdit_Luck.MaxValue := Luck_Max;
+   if SpinEdit_Luck.Value > Luck_Max then SpinEdit_Luck.Value := Luck_Max;
+  end;
+end;
+
+procedure TForm1.SpinButton_LuckUpClick(Sender: TObject);
+begin
+  Spinner_UpExecute(Label_Luck_Max);
+  inc(Luck_Max);
+  SpinEdit_Luck.MaxValue := Luck_Max;
+end;
+
+procedure TForm1.SpinButton_SkillDownClick(Sender: TObject);
+begin
+  if Skill_Max > 0 then
+  begin
+   Spinner_DownExecute(Label_Skill_Max);
+   dec(Skill_Max);
+   SpinEdit_Skill.MaxValue := Skill_Max;
+   if SpinEdit_Skill.Value > Skill_Max then SpinEdit_Skill.Value := Skill_Max;
+  end;
+end;
+
+procedure TForm1.SpinButton_SkillUpClick(Sender: TObject);
+begin
+  Spinner_UpExecute(Label_Skill_Max);
+  inc(Skill_Max);
+  SpinEdit_Skill.MaxValue := Skill_Max;
+end;
+
+procedure TForm1.SpinButton_StaminaDownClick(Sender: TObject);
+begin
+  if Stamina_Max > 0 then
+  begin
+   Spinner_DownExecute(Label_Stamina_Max);
+   dec(Stamina_Max);
+   SpinEdit_Stamina.MaxValue := Stamina_Max;
+   if SpinEdit_Stamina.Value > Stamina_Max then SpinEdit_Stamina.Value := Stamina_Max;
+  end;
+end;
+
+procedure TForm1.SpinButton_StaminaUpClick(Sender: TObject);
+begin
+  Spinner_UpExecute(Label_Stamina_Max);
+  inc(Stamina_Max);
+  SpinEdit_Stamina.MaxValue := Stamina_Max;
+end;
+
+procedure TForm1.Spinner_DownExecute(Sender: TObject);
+begin
+  (Sender as TLabel).Caption := IntToStr(StrToInt((Sender as TLabel).Caption) - 1);
+end;
+
+procedure TForm1.Spinner_UpExecute(Sender: TObject);
+begin
+  (Sender as TLabel).Caption := IntToStr(StrToInt((Sender as TLabel).Caption) + 1);
+end;
+
+procedure TForm1.Timer_AutosaveTimer(Sender: TObject);
+var f: TextFile;
+  filename: string[12];
+begin
+ try
+  AssignFile(f, ProgramPath + 'autosave.sor');
+  Rewrite(f);       { TODO : remember user's save file and restore after }
+  State := 'Failed to autosave file';
+   begin  // enforce Edit to be "changed" back to Label
+   Edit_Name.Enabled := False;
+   Edit_Name.Visible := False;
+   Label_Name_Edit.Enabled := True;
+   Label_Name_Edit.Visible := True;
+   Label_Name_Edit.Caption := Edit_Name.Text;
+   end;
+  save_state(f);
+ finally
+  CloseFile(f);
+ end;
+  State := 'Autosaved at ' + TimeToStr(Time);
+  StatusBar1.Panels[0].Text := State;
+end;
+
+procedure TForm1.About(Sender: TObject);
+begin
+  ShowMessage('Program version BETA 2.1.0.0 from 15.04.2014' +
+              #13 + 'Load compatible since version: 1.4.2.0' +
+              #13 + 'This program is free to use' +
+              #13 + 'Author: Neto`en' +
+              #13 + 'Icons made by the Rookie @ twitch.tv/Rookie');
+end;
+
+procedure TForm1.Load(Sender: TObject);
+var f: TextFile; path: string;
+begin
+ State := 'Failed to load from file';
+  begin  // enforce Edit to be "changed" back to Label
+  Edit_Name.Enabled := False;
+  Edit_Name.Visible := False;
+  Label_Name_Edit.Enabled := True;
+  Label_Name_Edit.Visible := True;
+  Label_Name_Edit.Caption := Edit_Name.Text;
+ end;
+ if Form5.FileOpenDialog1.Execute then
+ begin
+  path := Form5.FileOpenDialog1.FileName;
+  AssignFile(f, path);
+  Reset(f);
+  load_state(f);
+  CloseFile(f);
+  State := 'File loaded successfully';
+ end;
+ StatusBar1.Panels[0].Text := State;
+end;
+
+procedure TForm1.Arvsstreams1Click(Sender: TObject);
+begin
+ ShellExecute(handle, 'open', 'http://twitch.tv/ArvanEleron', nil, nil, SW_SHOW);
+end;
+
+procedure TForm1.Battle(Sender: TObject);
+begin
+  Form7.Show;
+
+end;
+
+procedure TForm1.Button_BonusesClick(Sender: TObject);
+begin
+  if not Form2.Visible then Form2.Show
+   else Form2.SetFocus;
+end;
+
+procedure TForm1.Dice(Sender: TObject);
+begin
+  if not Form3.Visible then Form3.Show
+   else Form3.SetFocus;
+end;
+
+procedure TForm1.Polls(Sender: TObject);
+begin
+  if not Form4.Visible then Form4.Show
+   else Form4.SetFocus;
+end;
+
+procedure TForm1.Reset_Form(Sender: TObject);
+begin
+  SpinEdit_Stamina.Value  := 0;
+  SpinEdit_Gold.Value     := 0;
+  SpinEdit_Skill.Value    := 0;
+  SpinEdit_Luck.Value     := 0;
+  SpinEdit_Provision.Value:= 0;
+  SpinEdit_Stat1.Value    := 0;
+  SpinEdit_Stat2.Value    := 0;
+  Label_Stamina_Max.Caption := '0';
+  Label_Skill_Max.Caption   := '0';
+  Label_Luck_Max.Caption    := '0';
+  Label_Stat1_Max.Caption   := '0';
+  Label_Stat2_Max.Caption   := '0';
+  Stamina_Max := 0;
+  Luck_Max    := 0;
+  Skill_Max   := 0;
+  Stat1_Max   := 0;
+  Stat2_Max   := 0;
+  Memo_Clues.Clear;
+  Memo_Items.Clear;
+  Form2.Memo_Equipment.Clear;
+  Edit_Name.Text := 'Double-click to change';
+  Label_Name_Edit.Caption := 'Double-click to change';
+end;
+
+procedure TForm1.Save_As(Sender: TObject);
+var f: TextFile; path: string;
+begin
+ State := 'Failed to save into file';
+ begin  // enforce Edit to be "changed" back to Label
+  Edit_Name.Enabled := False;
+  Edit_Name.Visible := False;
+  Label_Name_Edit.Enabled := True;
+  Label_Name_Edit.Visible := True;
+  Label_Name_Edit.Caption := Edit_Name.Text;
+ end;
+ if Form5.FileSaveDialog1.Execute then
+ begin
+  path := Form5.FileSaveDialog1.FileName;
+  AssignFile(f, path);
+  Rewrite(f);
+  save_state(f);
+  CloseFile(f);
+  State := 'File saved successfully';
+ end;
+ StatusBar1.Panels[0].Text := State;
+end;
+
+procedure TForm1.Save1Click(Sender: TObject);
+begin
+// if Form5.FileSaveDialog1.FileName <> nil then
+
+end;
+
+procedure TForm1.Edit_NameKeyPress(Sender: TObject; var Key: Char);
+begin
+  if Key = #13 then
+  begin
+   Key := #0;
+   if Edit_Name.Text = '' then Edit_Name.Text := 'Double-click to change';
+   Edit_Name.Enabled := False;
+   Edit_Name.Visible := False;
+   Label_Name_Edit.Enabled := True;
+   Label_Name_Edit.Visible := True;
+   Label_Name_Edit.Caption := Edit_Name.Text;
+  end;
+end;
+
+procedure TForm1.Edit_Stat1KeyPress(Sender: TObject; var Key: Char);
+begin
+  if Key = #13 then
+  begin
+   Key := #0;
+   if not (Edit_Stat1.Text = '') then Label_Stat1.Caption := Edit_Stat1.Text;
+   Edit_Stat1.Enabled := False;
+   Edit_Stat1.Visible := False;
+   Label_Stat1.Enabled := True;
+   Label_Stat1.Visible := True;
+  end;
+end;
+
+procedure TForm1.Edit_Stat2KeyPress(Sender: TObject; var Key: Char);
+begin
+  if Key = #13 then
+  begin
+   Key := #0;
+   if not (Edit_Stat2.Text = '') then Label_Stat2.Caption := Edit_Stat2.Text;
+   Edit_Stat2.Enabled := False;
+   Edit_Stat2.Visible := False;
+   Label_Stat2.Enabled := True;
+   Label_Stat2.Visible := True;
+  end;
+end;
+
+procedure TForm1.Exit(Sender: TObject);
+begin
+  Application.Terminate;
+end;
+
+procedure TForm1.Extended_Poll(Sender: TObject);
+begin
+  Form6.Show;
+end;
+
+procedure TForm1.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  Application.Terminate;
+end;
+
+procedure TForm1.FormCreate(Sender: TObject);
+begin
+// if Form5.FileSaveDialog1.FileNameLabel then
+//  Label_Name.Caption := 'str';
+
+end;
+
+procedure TForm1.FormShow(Sender: TObject);
+var
+ f: TextFile;
+begin
+  if Assigned(TStyleManager.ActiveStyle) then
+   fdefaultStyleName := TStyleManager.ActiveStyle.Name;
+  ProgramPath := ExtractFilePath(Application.ExeName);
+  state := 'No initial file found. Starting over...';
+  if FileExists(ProgramPath + 'last.sor') then
+  begin
+   state := 'Found last.sor file. Data has been loaded';
+   AssignFile(f, ProgramPath + 'last.sor');
+   Reset(f);
+   load_state(f);
+   CloseFile(f);
+  end;
+  StatusBar1.Panels[0].Text := state;
+end;
+
+procedure TForm1.Label_Name_EditDblClick(Sender: TObject);
+begin
+   Edit_Name.Enabled := True;
+   Edit_Name.Visible := True;
+   Label_Name_Edit.Enabled := False;
+   Label_Name_Edit.Visible := False;
+   Edit_Name.SetFocus;
+end;
+
+
+procedure TForm1.Label_Stat2DblClick(Sender: TObject);
+begin
+  Edit_Stat2.Text := Label_Stat2.Caption;
+  Edit_Stat2.Enabled := True;
+  Edit_Stat2.Visible := True;
+  Label_Stat2.Enabled := False;
+  Label_Stat2.Visible := False;
+  Edit_Stat2.SetFocus;
+end;
+
+end.

@@ -1,0 +1,39 @@
+unit Additional_hidden;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ActnList,
+  Vcl.PlatformDefaultStyleActnCtrls, Vcl.ActnMan, Vcl.StdCtrls;
+
+type
+  TForm5 = class(TForm)
+    ActionManager1: TActionManager;
+    Spinner_Up: TAction;
+    Spinner_Down: TAction;
+    Action_Clear_Label: TAction;
+    FileOpenDialog1: TFileOpenDialog;
+    FileSaveDialog1: TFileSaveDialog;
+    procedure Action_Clear_LabelExecute(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  Form5: TForm5;
+
+implementation
+
+{$R *.dfm}
+
+procedure TForm5.Action_Clear_LabelExecute(Sender: TObject);
+var i: byte;
+begin
+  for i := 1 to 10 do
+   ((Sender as TForm).FindComponent('Label' + IntToStr(i)) as TLabel).Caption := 'cleared';
+end;
+
+end.

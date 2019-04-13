@@ -1,0 +1,53 @@
+object Form5: TForm5
+  Left = 0
+  Top = 0
+  Caption = 'Form5'
+  ClientHeight = 201
+  ClientWidth = 353
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  OldCreateOrder = False
+  PixelsPerInch = 96
+  TextHeight = 13
+  object ActionManager1: TActionManager
+    Left = 32
+    StyleName = 'Platform Default'
+    object Spinner_Up: TAction
+      Caption = 'Spinner_Up'
+    end
+    object Spinner_Down: TAction
+      Caption = 'Spinner_Down'
+    end
+    object Action_Clear_Label: TAction
+      Caption = 'Clear_Labels'
+      OnExecute = Action_Clear_LabelExecute
+    end
+  end
+  object FileOpenDialog1: TFileOpenDialog
+    DefaultExtension = 'sor'
+    FavoriteLinks = <>
+    FileTypes = <
+      item
+        DisplayName = 'Sorcery save file'
+        FileMask = '*.sor'
+      end>
+    Options = []
+    Left = 120
+  end
+  object FileSaveDialog1: TFileSaveDialog
+    DefaultExtension = 'sor'
+    FavoriteLinks = <>
+    FileTypes = <
+      item
+        DisplayName = 'Sorcery File'
+        FileMask = '*.sor'
+      end>
+    OkButtonLabel = 'Save'
+    Options = [fdoOverWritePrompt, fdoNoReadOnlyReturn]
+    Left = 200
+  end
+end

@@ -1,0 +1,150 @@
+﻿unit Polls;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls,
+  Data.Bind.GenData, System.Rtti, System.Bindings.Outputs, Vcl.Bind.Editors,
+  Data.Bind.EngExt, Vcl.Bind.DBEngExt, Data.Bind.Components,
+  Data.Bind.ObjectScope, Vcl.Samples.Spin, Vcl.ComCtrls, Vcl.Buttons,
+  Vcl.Bind.Navigator, Vcl.ImgList;
+
+type
+  TForm4 = class(TForm)
+    Panel_BasicCases: TPanel;
+    TrackBar1: TTrackBar;
+    ProgressBar1: TProgressBar;
+    SpinEdit1: TSpinEdit;
+    ProgressBar2: TProgressBar;
+    ProgressBar3: TProgressBar;
+    TrackBar2: TTrackBar;
+    TrackBar3: TTrackBar;
+    SpinEdit2: TSpinEdit;
+    SpinEdit3: TSpinEdit;
+    Panel_Controls: TPanel;
+    Button_Add: TButton;
+    Button_Remove: TButton;
+    Button_ClearCases: TButton;
+    Panel_Additionalstuffaccessbutton: TPanel;
+    Button_ChangeSize: TButton;
+    ImageList1: TImageList;
+    Panel_AdditionalStuff: TPanel;
+    Edit_Case1: TEdit;
+    Edit_Case2: TEdit;
+    Edit_Case3: TEdit;
+    Button_ClearVotes: TButton;
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure TrackBar1Change(Sender: TObject);
+    procedure SetNewValue(NewValue: Word; Sender: TObject);
+    procedure SpinEdit1Change(Sender: TObject);
+    procedure Button_ChangeSizeClick(Sender: TObject);
+    procedure Button_AddClick(Sender: TObject);
+    procedure Edit_Case1Enter(Sender: TObject);
+    procedure Edit_Case1Exit(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+const deltaH = 53;
+
+var
+  Form4: TForm4;
+  NumberOfCases :byte = 3;
+
+implementation
+
+{$R *.dfm}
+
+procedure TForm4.Button_AddClick(Sender: TObject);
+var
+ cur_editcase :TEdit;
+ cur_spineditcase :TSpinEdit;
+begin
+  if NumberOfCases < 64 then begin
+   inc(NumberOfCases);
+   self.ClientHeight := self.ClientHeight + deltaH;
+//   self.Constraints. := 600;
+   cur_spineditcase := TSpinEdit.Create(Self);
+   cur_spineditcase.Parent := Panel_Basiccases;
+   cur_spineditcase.Top := SpinEdit1.Top + deltaH*(NumberOfCases-1);
+   cur_spineditcase.Left:= SpinEdit1.Left;
+   cur_spineditcase.Width := SpinEdit1.Width;
+   cur_spineditcase.Name := 'SpinEdit' + IntToStr(NumberOfCases);
+   cur_editcase := TEdit.Create(self);
+   cur_editcase.Parent := Panel_AdditionalStuff;
+   cur_editcase.Top := Edit_Case1.Top + deltaH*(NumberOfCases-1);
+   cur_editcase.Left:= Edit_Case1.Left;
+   cur_editcase.Width := Edit_Case1.Width;
+   cur_editcase.Name := 'Edit' + IntToStr(NumberOfCases);
+   cur_editcase.Text:= 'Case ' + IntToStr(NumberOfCases);
+   cur_editcase.Tag := NumberOfCases;
+   cur_editcase.OnEnter := Edit_Case1Enter;
+   cur_editcase.OnExit  := Edit_Case1Exit;
+   end;
+end;
+
+procedure TForm4.Button_ChangeSizeClick(Sender: TObject);
+const extrasize = 370; minorsize = 18;
+begin
+ with Panel_AdditionalStuff do
+  if Width <= minorsize then begin
+   Width := extrasize;
+   Self.Width := Self.Width + extrasize - minorsize;
+   Button_ChangeSize.ImageIndex := 1;
+   Button_ChangeSize.HotImageIndex := 1;
+   end else begin                    { TODO : Add Form4 size restrictions for both main and extended sizes }
+   Width := minorsize;
+   Self.Width := Self.Width - extrasize + minorsize;
+   Button_ChangeSize.ImageIndex := 0;
+   Button_ChangeSize.HotImageIndex := 0;
+   end;
+end;
+
+procedure TForm4.Edit_Case1Enter(Sender: TObject);
+begin
+  if TEdit(Sender).Text = 'Case ' + IntToStr(TEdit(Sender).Tag) then
+   TEdit(Sender).Text := '';
+end;
+
+procedure TForm4.Edit_Case1Exit(Sender: TObject);
+begin
+  if TEdit(Sender).Text = '' then TEdit(Sender).Text :=
+   'Case ' + IntToStr(TEdit(Sender).Tag);
+end;
+
+procedure TForm4.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  Form4.Hide;
+  Exit;
+end;
+
+procedure TForm4.SetNewValue(NewValue: Word; Sender: TObject);
+var l :char; k :byte; MaxValue :word;
+begin
+  l := TWinControl(Sender).Name[High(TWinControl(Sender).Name)];
+  TProgressBar(FindComponent('ProgressBar' + l)).Position := NewValue;
+  TTrackBar(FindComponent('TrackBar' + l)).Position := NewValue;
+  TSpinEdit(FindComponent('SpinEdit' + l)).Value := NewValue;
+  MaxValue := SpinEdit1.Value;
+  for k := 2 to NumberOfCases do MaxValue := MaxValue + TSpinEdit(FindComponent('SpinEdit' + IntToStr(k))).Value;
+  for k := 1 to NumberOfCases do
+   begin
+   TProgressBar(FindComponent('ProgressBar' + IntToStr(k))).Max := MaxValue;
+   end;
+
+end;
+
+procedure TForm4.SpinEdit1Change(Sender: TObject);
+begin
+  SetNewValue(TSpinEdit(Sender).Value, Sender);
+end;
+
+procedure TForm4.TrackBar1Change(Sender: TObject);
+begin
+  SetNewValue(TTrackBar(Sender).Position, Sender);
+end;
+
+end.

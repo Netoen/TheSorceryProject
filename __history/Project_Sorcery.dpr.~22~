@@ -1,0 +1,28 @@
+program Project_Sorcery;
+
+
+
+uses
+  Vcl.Forms,
+  Sorcery in 'Sorcery.pas' {Form1},
+  Items_and_Artifacts in 'Items_and_Artifacts.pas' {Form2},
+  Dice_Roller in 'Dice_Roller.pas' {Form3},
+  Polls in 'Polls.pas' {Form4},
+  Additional_hidden in 'Additional_hidden.pas' {Form5},
+  Vcl.Themes,
+  Vcl.Styles;
+
+{$R *.res}
+
+begin
+  Application.Initialize;
+  Application.MainFormOnTaskbar := True;
+//  Application.ShowMainForm := False;
+  TStyleManager.TrySetStyle('Ruby Graphite');
+  Application.CreateForm(TForm1, Form1);
+  Application.CreateForm(TForm2, Form2);
+  Application.CreateForm(TForm3, Form3);
+  Application.CreateForm(TForm4, Form4);
+  Application.CreateForm(TForm5, Form5);
+  Application.Run;
+end.
